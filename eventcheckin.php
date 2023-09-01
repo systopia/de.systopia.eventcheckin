@@ -72,26 +72,6 @@ function eventcheckin_civicrm_install()
 }
 
 /**
- * Implements hook_civicrm_postInstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_postInstall
- */
-function eventcheckin_civicrm_postInstall()
-{
-    _eventcheckin_civix_civicrm_postInstall();
-}
-
-/**
- * Implements hook_civicrm_uninstall().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_uninstall
- */
-function eventcheckin_civicrm_uninstall()
-{
-    _eventcheckin_civix_civicrm_uninstall();
-}
-
-/**
  * Implements hook_civicrm_enable().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
@@ -99,38 +79,6 @@ function eventcheckin_civicrm_uninstall()
 function eventcheckin_civicrm_enable()
 {
     _eventcheckin_civix_civicrm_enable();
-}
-
-/**
- * Implements hook_civicrm_disable().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_disable
- */
-function eventcheckin_civicrm_disable()
-{
-    _eventcheckin_civix_civicrm_disable();
-}
-
-/**
- * Implements hook_civicrm_upgrade().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_upgrade
- */
-function eventcheckin_civicrm_upgrade($op, CRM_Queue_Queue $queue = null)
-{
-    return _eventcheckin_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_entityTypes().
- *
- * Declare entity types provided by this module.
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_entityTypes
- */
-function eventcheckin_civicrm_entityTypes(&$entityTypes)
-{
-    _eventcheckin_civix_civicrm_entityTypes($entityTypes);
 }
 
 // --- Functions below this ship commented out. Uncomment as required. ---
