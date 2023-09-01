@@ -18,7 +18,7 @@ use CRM_Eventcheckin_ExtensionUtil as E;
 /**
  * Collection of upgrade steps.
  */
-class CRM_Eventcheckin_Upgrader extends CRM_Eventcheckin_Upgrader_Base {
+class CRM_Eventcheckin_Upgrader extends CRM_Extension_Upgrader_Base {
 
     /**
      * Create the required custom data
