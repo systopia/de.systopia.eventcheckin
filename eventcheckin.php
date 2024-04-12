@@ -49,8 +49,14 @@ function eventcheckin_civicrm_config(&$config)
  * Define custom (Drupal) permissions
  */
 function eventcheckin_civicrm_permission(&$permissions) {
-    $permissions['event checkin'] = E::ts('Check-In Event Participants');
-    $permissions['remote event checkin'] = E::ts('RemoteContacts: Check-In Event Participants');
+    $permissions['event checkin'] = [
+        'label' => E::ts('Check-In Event Participants'),
+        'description' => E::ts('Allows checking-in event participants.'),
+    ];
+    $permissions['remote event checkin'] = [
+        'label' => E::ts('RemoteContacts: Check-In Event Participants'),
+        'description' => E::ts('Allows checking-in event participants vie the CiviRemote API.')
+    ];
 }
 
 /**
