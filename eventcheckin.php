@@ -14,7 +14,6 @@
 +--------------------------------------------------------*/
 
 
-require_once __DIR__ . '/vendor/autoload.php';
 require_once 'eventcheckin.civix.php';
 
 // phpcs:disable
@@ -23,23 +22,29 @@ use CRM_Eventcheckin_ExtensionUtil as E;
 
 // phpcs:enable
 
+function _eventcheckin_composer_autoload(): void {
+  if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+  }
+}
+
 /**
  * Implements hook_civicrm_config().
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
  */
-function eventcheckin_civicrm_config(&$config)
-{
-    _eventcheckin_civix_civicrm_config($config);
-    // register events (with our own wrapper to avoid duplicate registrations)
-    $dispatcher = new RemoteToolsDispatcher();
+function eventcheckin_civicrm_config(&$config) {
+  _eventcheckin_composer_autoload();
+  _eventcheckin_civix_civicrm_config($config);
+  // register events (with our own wrapper to avoid duplicate registrations)
+  $dispatcher = new RemoteToolsDispatcher();
 
-    // EVENTMESSAGES.TOKENS
-    $dispatcher->addUniqueListener(
+  // EVENTMESSAGES.TOKENS
+  $dispatcher->addUniqueListener(
         'civi.eventmessages.tokens',
         ['CRM_Eventcheckin_Tokens', 'addTokens']
     );
-    $dispatcher->addUniqueListener(
+  $dispatcher->addUniqueListener(
         'civi.eventmessages.tokenlist',
         ['CRM_Eventcheckin_Tokens', 'listTokens']
     );
@@ -49,22 +54,22 @@ function eventcheckin_civicrm_config(&$config)
  * Define custom (Drupal) permissions
  */
 function eventcheckin_civicrm_permission(&$permissions) {
-    $permissions['event checkin'] = [
-        'label' => E::ts('Check-In Event Participants'),
-        'description' => E::ts('Allows checking-in event participants.'),
-    ];
-    $permissions['remote event checkin'] = [
-        'label' => E::ts('RemoteContacts: Check-In Event Participants'),
-        'description' => E::ts('Allows checking-in event participants vie the CiviRemote API.')
-    ];
+  $permissions['event checkin'] = [
+    'label' => E::ts('Check-In Event Participants'),
+    'description' => E::ts('Allows checking-in event participants.'),
+  ];
+  $permissions['remote event checkin'] = [
+    'label' => E::ts('RemoteContacts: Check-In Event Participants'),
+    'description' => E::ts('Allows checking-in event participants vie the CiviRemote API.'),
+  ];
 }
 
 /**
  * Set permissions EventCheckin API
  */
 function eventcheckin_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
-    $permissions['event_checkin']['verify']  = ['event checkin', 'remote event checkin'];
-    $permissions['event_checkin']['confirm'] = ['event checkin', 'remote event checkin'];
+  $permissions['event_checkin']['verify']  = ['event checkin', 'remote event checkin'];
+  $permissions['event_checkin']['confirm'] = ['event checkin', 'remote event checkin'];
 }
 
 /**
@@ -72,9 +77,8 @@ function eventcheckin_civicrm_alterAPIPermissions($entity, $action, &$params, &$
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function eventcheckin_civicrm_install()
-{
-    _eventcheckin_civix_civicrm_install();
+function eventcheckin_civicrm_install() {
+  _eventcheckin_civix_civicrm_install();
 }
 
 /**
@@ -82,9 +86,8 @@ function eventcheckin_civicrm_install()
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function eventcheckin_civicrm_enable()
-{
-    _eventcheckin_civix_civicrm_enable();
+function eventcheckin_civicrm_enable() {
+  _eventcheckin_civix_civicrm_enable();
 }
 
 // --- Functions below this ship commented out. Uncomment as required. ---
