@@ -13,14 +13,14 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
 
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 require_once 'eventcheckin.civix.php';
+// phpcs:enable
 
-// phpcs:disable
 use Civi\RemoteToolsDispatcher;
 use CRM_Eventcheckin_ExtensionUtil as E;
-
-// phpcs:enable
 
 function _eventcheckin_composer_autoload(): void {
   if (file_exists(__DIR__ . '/vendor/autoload.php')) {
@@ -89,31 +89,3 @@ function eventcheckin_civicrm_install() {
 function eventcheckin_civicrm_enable() {
   _eventcheckin_civix_civicrm_enable();
 }
-
-// --- Functions below this ship commented out. Uncomment as required. ---
-
-/**
- * Implements hook_civicrm_preProcess().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_preProcess
- */
-//function eventcheckin_civicrm_preProcess($formName, &$form) {
-//
-//}
-
-/**
- * Implements hook_civicrm_navigationMenu().
- *
- * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
- */
-//function eventcheckin_civicrm_navigationMenu(&$menu) {
-//  _eventcheckin_civix_insert_navigation_menu($menu, 'Mailings', array(
-//    'label' => E::ts('New subliminal message'),
-//    'name' => 'mailing_subliminal_message',
-//    'url' => 'civicrm/mailing/subliminal',
-//    'permission' => 'access CiviMail',
-//    'operator' => 'OR',
-//    'separator' => 0,
-//  ));
-//  _eventcheckin_civix_navigationMenu($menu);
-//}
