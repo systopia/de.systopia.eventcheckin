@@ -228,7 +228,7 @@ class CRM_Eventcheckin_CheckinFields
 
             default:
                 // get the raw value
-                $value = CRM_Utils_Array::value($field_name, $entity_data);
+                $value = $entity_data[$field_name] ?? NULL;
                 // resolve option values, if necessary
                 return self::resolveOptionValues($field_name, $value);
         }
