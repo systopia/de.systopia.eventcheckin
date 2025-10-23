@@ -61,58 +61,58 @@ function civicrm_api3_event_checkin_verify($params)
         if (CRM_Core_Permission::check('remote event checkin')) {
             // verify and check the remote user
             if (empty($params['remote_contact_id'])) {
-                throw new CiviCRM_API3_Exception(E::ts("remote_contact_id is mandatory with the 'remote event checkin' permission"));
+                throw new CRM_Core_Exception(E::ts("remote_contact_id is mandatory with the 'remote event checkin' permission"));
             } else {
                 $remote_contact_id = $params['remote_contact_id'];
                 $contact_id = CRM_Remotetools_Contact::getByKey($remote_contact_id);
                 if (empty($contact_id)) {
-                    throw new CiviCRM_API3_Exception(E::ts("remote_contact_id is not valid."));
+                    throw new CRM_Core_Exception(E::ts("remote_contact_id is not valid."));
                 } else {
                     if (!CRM_Remotetools_ContactRoles::hasRole($contact_id, 'remote-event-check-in')) {
-                        throw new CiviCRM_API3_Exception(E::ts("Remote contact does not have the 'remote-event-check-in' role."));
+                        throw new CRM_Core_Exception(E::ts("Remote contact does not have the 'remote-event-check-in' role."));
                     }
                 }
             }
         } else {
             // this shouldn't happen, because the API spec permissions should enforce this:
-            throw new CiviCRM_API3_Exception(E::ts("Permission denied"));
+            throw new CRM_Core_Exception(E::ts("Permission denied"));
         }
     }
 
     // 2) VALIDATE TOKEN
     $participant_id = CRM_Remotetools_SecureToken::decodeEntityToken('Participant', $params['token'], 'checkin');
     if (!$participant_id) {
-        throw new CiviCRM_API3_Exception(E::ts("Invalid Token"));
+        throw new CRM_Core_Exception(E::ts("Invalid Token"));
     }
 
     // verify that the participant exists
     $participant = CRM_Eventcheckin_CheckinFields::getParticipant($participant_id);
     if (empty($participant)) {
-        throw new CiviCRM_API3_Exception(E::ts("Participant [%1] doesn't exist (any more).", [1 => $participant_id]));
+        throw new CRM_Core_Exception(E::ts("Participant [%1] doesn't exist (any more).", [1 => $participant_id]));
     }
 
     // get the possible current status list
     $valid_status_list = Civi::settings()->get('event_checkin_status_list');
     if (empty($valid_status_list)) {
-        throw new CiviCRM_API3_Exception(E::ts("No eligible statuses for checkin configured."));
+        throw new CRM_Core_Exception(E::ts("No eligible statuses for checkin configured."));
     }
 
     // get the possible future status list
     $checked_in_status_list = CRM_Eventcheckin_CheckinFields::getCheckedInStatusList();
     if (empty($checked_in_status_list)) {
-        throw new CiviCRM_API3_Exception(E::ts("No eligible target statuses for checkin configured."));
+        throw new CRM_Core_Exception(E::ts("No eligible target statuses for checkin configured."));
     }
 
     // verify that the participant has an eligible status
     if (!in_array($participant['participant_status_id'], $valid_status_list)) {
-        throw new CiviCRM_API3_Exception(E::ts("Participant's status is currently '%1', and is therefore not eligible for check-in",
+        throw new CRM_Core_Exception(E::ts("Participant's status is currently '%1', and is therefore not eligible for check-in",
          [1 => $participant['participant_status']]));
     }
 
     // check if the event is still active
     $event = CRM_Eventcheckin_CheckinFields::getEventForParticipant($participant_id);
     if (empty($event['is_active'])) {
-        throw new CiviCRM_API3_Exception(E::ts("Event is not active any more"));
+        throw new CRM_Core_Exception(E::ts("Event is not active any more"));
     }
 
     // gather the data
