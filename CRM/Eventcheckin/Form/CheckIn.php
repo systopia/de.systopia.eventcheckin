@@ -56,7 +56,7 @@ class CRM_Eventcheckin_Form_CheckIn extends CRM_Core_Form
                 || $button_position == CRM_Eventcheckin_Form_Settings::CHECKIN_BUTTONS_TOP_AND_BOTTOM
                 || $button_position == CRM_Eventcheckin_Form_Settings::CHECKIN_BUTTONS_UNDEFINED));
 
-        } catch (CiviCRM_API3_Exception $ex) {
+        } catch (CRM_Core_Exception $ex) {
             $error_message = $ex->getMessage();
             $this->assign('status_type', 'error');
             $this->assign('status_message', $error_message);

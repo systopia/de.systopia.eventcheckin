@@ -359,7 +359,7 @@ class CRM_Eventcheckin_CheckinFields
                                'option_group_id' => $custom_field['option_group_id'],
                                'value'           => $value
                             ]);
-                        } catch (CiviCRM_API3_Exception $ex) {
+                        } catch (CRM_Core_Exception $ex) {
                             // lookup failed
                             return $value;
                         }

@@ -65,14 +65,14 @@ function civicrm_api3_event_checkin_confirm($params)
     // 2) (RE-)VALIDATE TOKEN
     $participant_id = CRM_Remotetools_SecureToken::decodeEntityToken('Participant', $params['token'], 'checkin');
     if (!$participant_id) {
-        throw new CiviCRM_API3_Exception(E::ts("Invalid Token"));
+        throw new CRM_Core_Exception(E::ts("Invalid Token"));
     }
 
     // 3) DETERMINE REQUESTED STATUS
     $allowed_status_options = $verification_result['checkin_options'];
     if (empty($params['status_id'])) {
         if (count($allowed_status_options) > 1) {
-            throw new CiviCRM_API3_Exception(E::ts("You have to provide the status ID if more than two are configured."));
+            throw new CRM_Core_Exception(E::ts("You have to provide the status ID if more than two are configured."));
         } else {
             $one_status_tuple = array_keys($allowed_status_options);
             $requested_status_id = (int) reset($one_status_tuple);
@@ -88,7 +88,7 @@ function civicrm_api3_event_checkin_confirm($params)
             'status_id' => $requested_status_id
         ]);
     } else {
-        throw new CiviCRM_API3_Exception(E::ts("Invalid participant status requested."));
+        throw new CRM_Core_Exception(E::ts("Invalid participant status requested."));
     }
 
     return civicrm_api3_create_success();

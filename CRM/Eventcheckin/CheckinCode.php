@@ -110,7 +110,7 @@ class CRM_Eventcheckin_CheckinCode
         // get participant
         $participant_id = CRM_Remotetools_SecureToken::decodeEntityToken('Participant', $token, 'checkin');
         if (!$participant_id) {
-            throw new CiviCRM_API3_Exception(E::ts("Invalid Token"));
+            throw new CRM_Core_Exception(E::ts("Invalid Token"));
         }
 
         // verify participant (yes, again!)
