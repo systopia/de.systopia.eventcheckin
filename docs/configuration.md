@@ -15,10 +15,10 @@ documents (e.g. event tickets) manually.
 
 Placeholders (Smarty variables) that can be used are:
 
-* `{$qr_event_checkin_code}` - generates a unique check-in-link
-* `{$qr_event_checkin_code_img}` - generates a unique check-in-link presented as
+* `{$event_checkin_code}` - generates a unique check-in-link
+* `{$event_checkin_code_img}` - generates a unique check-in-link presented as
   a QR Code with fixed width
-* `{$qr_event_checkin_code_data}` - generates a unique check-in-link presented
+* `{$event_checkin_code_data}` - generates a unique check-in-link presented
   as a QR Code that can be html-formatted as an image
 
 Please refer to the
