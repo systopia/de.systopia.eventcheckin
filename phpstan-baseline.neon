@@ -1,0 +1,211 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Eventcheckin/CheckinCode.php
+
+		-
+			message: '#^Method CRM_Eventcheckin_CheckinCode\:\:getExpirationDate\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: CRM/Eventcheckin/CheckinCode.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: CRM/Eventcheckin/CheckinCode.php
+
+		-
+			message: '#^Binary operation "\." between ''custom_'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: CRM/Eventcheckin/CheckinFields.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: CRM/Eventcheckin/CheckinFields.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 7
+			path: CRM/Eventcheckin/CheckinFields.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: CRM/Eventcheckin/CheckinFields.php
+
+		-
+			message: '#^Part \$entity_data\[''contact_id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: CRM/Eventcheckin/CheckinFields.php
+
+		-
+			message: '#^Part \$entity_data\[''id''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: CRM/Eventcheckin/CheckinFields.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
+			path: CRM/Eventcheckin/CheckinFields.php
+
+		-
+			message: '#^Cannot access offset ''checkin_options'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Eventcheckin/Form/CheckIn.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Eventcheckin/Form/CheckIn.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Eventcheckin/Form/CheckIn.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 5
+			path: CRM/Eventcheckin/Form/CheckIn.php
+
+		-
+			message: '#^Only booleans are allowed in &&, int\|false given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: CRM/Eventcheckin/Form/CheckIn.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Eventcheckin/Form/CheckIn.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, int\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: CRM/Eventcheckin/Form/CheckIn.php
+
+		-
+			message: '#^Cannot access offset ''values'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: CRM/Eventcheckin/Form/Settings.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: CRM/Eventcheckin/Tokens.php
+
+		-
+			message: '#^Variable \$link might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: CRM/Eventcheckin/Tokens.php
+
+		-
+			message: '#^Cannot access offset ''checkin_options'' on array\|int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: api/v3/EventCheckin/Confirm.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: api/v3/EventCheckin/Confirm.php
+
+		-
+			message: '#^Function _civicrm_api3_event_checkin_confirm_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/EventCheckin/Confirm.php
+
+		-
+			message: '#^Function civicrm_api3_event_checkin_confirm\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/EventCheckin/Confirm.php
+
+		-
+			message: '#^Function civicrm_api3_event_checkin_confirm\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/EventCheckin/Confirm.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: api/v3/EventCheckin/Confirm.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: api/v3/EventCheckin/Verify.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 6
+			path: api/v3/EventCheckin/Verify.php
+
+		-
+			message: '#^Function _civicrm_api3_event_checkin_verify_spec\(\) has parameter \$spec with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/EventCheckin/Verify.php
+
+		-
+			message: '#^Function civicrm_api3_event_checkin_verify\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/EventCheckin/Verify.php
+
+		-
+			message: '#^Function civicrm_api3_event_checkin_verify\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: api/v3/EventCheckin/Verify.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: api/v3/EventCheckin/Verify.php
+
+		-
+			message: '#^Function eventcheckin_civicrm_alterAPIPermissions\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: eventcheckin.php
+
+		-
+			message: '#^Function eventcheckin_civicrm_alterAPIPermissions\(\) has parameter \$permissions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: eventcheckin.php
+
+		-
+			message: '#^Function eventcheckin_civicrm_permission\(\) has parameter \$permissions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: eventcheckin.php

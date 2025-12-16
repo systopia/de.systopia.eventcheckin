@@ -13,6 +13,8 @@
 | written permission from the original author(s).        |
 +--------------------------------------------------------*/
 
+declare(strict_types = 1);
+
 use CRM_Eventcheckin_ExtensionUtil as E;
 
 /**
@@ -20,28 +22,26 @@ use CRM_Eventcheckin_ExtensionUtil as E;
  */
 class CRM_Eventcheckin_Upgrader extends CRM_Extension_Upgrader_Base {
 
-    /**
-     * Create the required custom data
-     */
-    public function install()
-    {
-        // install necessary data
-        $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
-        $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
-    }
+  /**
+   * Create the required custom data
+   */
+  public function install(): void {
+    // install necessary data
+    $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
+    $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
+  }
 
-    /**
-     * Adding the remote contact role
-     *
-     * @return TRUE on success
-     * @throws Exception
-     */
-    public function upgrade_0001()
-    {
-        $this->ctx->log->info('Adding remote contact role');
-        $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
-        $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
-        return true;
-    }
+  /**
+   * Adding the remote contact role
+   *
+   * @return TRUE on success
+   * @throws Exception
+   */
+  public function upgrade_0001(): bool {
+    $this->ctx->log->info('Adding remote contact role');
+    $customData = new CRM_Remotetools_CustomData(E::LONG_NAME);
+    $customData->syncOptionGroup(E::path('resources/option_group_remote_contact_roles.json'));
+    return TRUE;
+  }
 
 }
