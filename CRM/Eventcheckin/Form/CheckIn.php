@@ -22,14 +22,15 @@ use CRM_Eventcheckin_ExtensionUtil as E;
  */
 class CRM_Eventcheckin_Form_CheckIn extends CRM_Core_Form {
   /**
-   * @var string the token currently being used */
-  protected $token;
+   * @var string|null the token currently being used */
+  protected ?string $token = NULL;
 
-  public function buildQuickForm() {
+  public function buildQuickForm(): void {
     // title
     $this->setTitle(E::ts('Event Check-In'));
 
     // get token
+    // @phpstan-ignore assign.propertyType
     $this->token = CRM_Utils_Request::retrieve('token', 'String', $this);
 
     // verify token
@@ -48,6 +49,7 @@ class CRM_Eventcheckin_Form_CheckIn extends CRM_Core_Form {
       $this->addButtons($buttons);
 
       // add button position
+      // @phpstan-ignore cast.int
       $button_position = (int) Civi::settings()->get('event_button_position');
       $this->assign('show_buttons_top', (int) (
            $button_position == CRM_Eventcheckin_Form_Settings::CHECKIN_BUTTONS_TOP
@@ -64,7 +66,7 @@ class CRM_Eventcheckin_Form_CheckIn extends CRM_Core_Form {
       $this->assign('status_message', $error_message);
 
       // show the fields anyway, if we have a participant ID:
-      $participant_id = CRM_Remotetools_SecureToken::decodeEntityToken('Participant', $this->token, 'checkin');
+      $participant_id = CRM_Remotetools_SecureToken::decodeEntityToken('Participant', $this->token ?? '', 'checkin');
       if ($participant_id) {
         $fields = CRM_Eventcheckin_CheckinFields::getParticipantFields($participant_id);
         $this->assign('fields', $fields);
@@ -76,13 +78,13 @@ class CRM_Eventcheckin_Form_CheckIn extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
-  public function postProcess() {
+  public function postProcess(): void {
     $values = $this->exportValues();
     foreach ($values as $submitted_field => $submitted_value) {
       if (!empty($submitted_value) && preg_match('/^_qf_CheckIn_submit_[0-9]+$/', $submitted_field)) {
         $check_in_status = (int) substr($submitted_field, 19);
         if ($check_in_status) {
-          CRM_Eventcheckin_CheckinCode::checkInParticipant($this->token, $check_in_status);
+          CRM_Eventcheckin_CheckinCode::checkInParticipant($this->token ?? '', $check_in_status);
           $this->assign('status_type', 'success');
           $this->assign('status_message', 'Contact is now checked in.');
           break;

@@ -23,14 +23,9 @@ class CRM_Eventcheckin_CheckinCode {
   /**
    * Generates a check-in token for the given participant
    *
-   * @param string $participantId
-   *
-   * @return string participantId
-   *   the token
-   *
    * @throws \Exception
    */
-  public static function generate(string $participantId): string {
+  public static function generate(int $participantId): string {
     return CRM_Remotetools_SecureToken::generateEntityToken(
         'Participant',
         $participantId,
@@ -45,9 +40,9 @@ class CRM_Eventcheckin_CheckinCode {
    * @param string $code
    *   the code submitted
    *
-   * @return string|null The participant ID or, if invalid, null.
+   * @return int|null The participant ID or, if invalid, null.
    */
-  public static function validate(string $code) {
+  public static function validate(string $code): ?int {
     $participantId = CRM_Remotetools_SecureToken::decodeEntityToken(
         'Participant',
         $code,
@@ -63,15 +58,14 @@ class CRM_Eventcheckin_CheckinCode {
    *
    * @param string $token
    *   the token submitted
-   *
-   * @return string|null The participant ID or, if invalid, null.
    */
-  public static function generateLink(string $token) {
+  public static function generateLink(string $token): string {
     $external_link = Civi::settings()->get('event_checkin_link');
-    if ($external_link) {
+    if (is_string($external_link) && '' !== $external_link) {
+      /** @var string $link */
       $link = preg_replace('/\{code\}/', $token, $external_link);
       if (substr($link, 0, 8) == 'civicrm/') {
-        $link = CRM_Utils_System::url($link, NULL, TRUE);
+        $link = CRM_Utils_System::url($link, '', TRUE);
       }
     }
     else {
@@ -82,11 +76,8 @@ class CRM_Eventcheckin_CheckinCode {
 
   /**
    * Calculate the expiry date (if any) based on the settings
-   *
-   * @param integer $participant_id
-   *   participant ID
    */
-  public static function getExpirationDate($participant_id) {
+  public static function getExpirationDate(int $participantId) {
     // todo: here we could implement settings like '1 hour after the event started' based on the participant id
     return Civi::settings()->get('event_checkin_timeout');
   }
@@ -97,15 +88,15 @@ class CRM_Eventcheckin_CheckinCode {
    * @param string $token
    *   the token submitted
    *
-   * @param integer $participant_status_id
+   * @param integer $participantStatusId
    *   the target participant status
    *
    * @throws \Exception if something goes wrong
    */
-  public static function checkInParticipant($token, $participant_status_id) {
+  public static function checkInParticipant(string $token, int $participantStatusId): void {
     // get participant
-    $participant_id = CRM_Remotetools_SecureToken::decodeEntityToken('Participant', $token, 'checkin');
-    if (!$participant_id) {
+    $participantId = CRM_Remotetools_SecureToken::decodeEntityToken('Participant', $token, 'checkin');
+    if (!$participantId) {
       throw new CRM_Core_Exception(E::ts('Invalid Token'));
     }
 
@@ -114,8 +105,8 @@ class CRM_Eventcheckin_CheckinCode {
 
     // finally: update participant status
     civicrm_api3('Participant', 'create', [
-      'id' => $participant_id,
-      'participant_status_id' => $participant_status_id,
+      'id' => $participantId,
+      'participant_status_id' => $participantStatusId,
     ]);
   }
 

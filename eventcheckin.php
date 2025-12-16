@@ -33,7 +33,7 @@ function _eventcheckin_composer_autoload(): void {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_config/
  */
-function eventcheckin_civicrm_config(&$config) {
+function eventcheckin_civicrm_config(CRM_Core_Config $config): void {
   _eventcheckin_composer_autoload();
   _eventcheckin_civix_civicrm_config($config);
   // register events (with our own wrapper to avoid duplicate registrations)
@@ -53,7 +53,7 @@ function eventcheckin_civicrm_config(&$config) {
 /**
  * Define custom (Drupal) permissions
  */
-function eventcheckin_civicrm_permission(&$permissions) {
+function eventcheckin_civicrm_permission(array &$permissions): void {
   $permissions['event checkin'] = [
     'label' => E::ts('Check-In Event Participants'),
     'description' => E::ts('Allows checking-in event participants.'),
@@ -67,7 +67,12 @@ function eventcheckin_civicrm_permission(&$permissions) {
 /**
  * Set permissions EventCheckin API
  */
-function eventcheckin_civicrm_alterAPIPermissions($entity, $action, &$params, &$permissions) {
+function eventcheckin_civicrm_alterAPIPermissions(
+  string $entity,
+  string $action,
+  array &$params,
+  array &$permissions
+): void {
   $permissions['event_checkin']['verify']  = ['event checkin', 'remote event checkin'];
   $permissions['event_checkin']['confirm'] = ['event checkin', 'remote event checkin'];
 }
@@ -77,7 +82,7 @@ function eventcheckin_civicrm_alterAPIPermissions($entity, $action, &$params, &$
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_install
  */
-function eventcheckin_civicrm_install() {
+function eventcheckin_civicrm_install(): void {
   _eventcheckin_civix_civicrm_install();
 }
 
@@ -86,6 +91,6 @@ function eventcheckin_civicrm_install() {
  *
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_enable
  */
-function eventcheckin_civicrm_enable() {
+function eventcheckin_civicrm_enable(): void {
   _eventcheckin_civix_civicrm_enable();
 }

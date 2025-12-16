@@ -26,7 +26,7 @@ use CRM_Eventcheckin_ExtensionUtil as E;
  * @param array $spec
  *   API specification blob
  */
-function _civicrm_api3_event_checkin_confirm_spec(&$spec) {
+function _civicrm_api3_event_checkin_confirm_spec(array &$spec): void {
   $spec['remote_contact_id'] = [
     'name'         => 'remote_contact_id',
     'api.required' => 0,
@@ -55,7 +55,7 @@ function _civicrm_api3_event_checkin_confirm_spec(&$spec) {
  *
  * @param array $params
  */
-function civicrm_api3_event_checkin_confirm($params) {
+function civicrm_api3_event_checkin_confirm(array $params): array {
   // 1) VERIFY (might throw an exception)
   $verification_result = civicrm_api3('EventCheckin', 'verify', $params);
 

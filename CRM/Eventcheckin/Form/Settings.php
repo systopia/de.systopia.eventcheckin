@@ -28,7 +28,7 @@ class CRM_Eventcheckin_Form_Settings extends CRM_Core_Form {
   public const CHECKIN_BUTTONS_BOTTOM         = 2;
   public const CHECKIN_BUTTONS_TOP_AND_BOTTOM = 3;
 
-  public function buildQuickForm() {
+  public function buildQuickForm(): void {
     // TOKEN SETTINGS
     $this->add(
         'text',
@@ -128,7 +128,7 @@ class CRM_Eventcheckin_Form_Settings extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
-  public function postProcess() {
+  public function postProcess(): void {
     $values = $this->exportValues();
     Civi::settings()->set('event_checkin_link', $values['external_link']);
     Civi::settings()->set('event_checkin_timeout', $values['token_timeout']);
@@ -147,8 +147,10 @@ class CRM_Eventcheckin_Form_Settings extends CRM_Core_Form {
 
   /**
    * Get all participant status types
+   *
+   * @return array<int, string>
    */
-  protected function getParticipantStatusTypes() {
+  protected function getParticipantStatusTypes(): array {
     static $participant_status_list = NULL;
     if ($participant_status_list === NULL) {
       $participant_status_list = [];

@@ -24,6 +24,7 @@ use CRM_Eventcheckin_ExtensionUtil as E;
  *   interface
  */
 class CRM_Eventcheckin_CheckinFields {
+
   public const PARTICIPANT_FIELDS = 'id,event_id,participant_status,participant_status_id,participant_register_date,'
   . 'display_name,contact_id,participant_role';
   public const CONTACT_FIELDS = 'id,first_name,display_name,last_name,preferred_language';
@@ -35,10 +36,10 @@ class CRM_Eventcheckin_CheckinFields {
    *
    * tip: if you want to add fields here, you might also have to adjust the XX_FIELDS constants above
    *
-   * @return array
+   * @return array<string, array<string, string>>
    *   list of field specs
    */
-  public static function allFields() {
+  public static function allFields(): array {
     $fields = [
       'first_name'   => [
         'name'        => 'first_name',
@@ -109,12 +110,12 @@ class CRM_Eventcheckin_CheckinFields {
   }
 
   /**
-   * Get a list of of participant statuses that are considered checked-in
+   * Get a list of participant statuses that are considered checked-in
    *
-   * @return array
+   * @return array<int, string>
    *   [participant_status_id =>  participant_status_label]
    */
-  public static function getCheckedInStatusList() {
+  public static function getCheckedInStatusList(): array {
     $result = [];
     $checked_in_status_list = Civi::settings()->get('event_checked_in_status_list');
     if (!empty($checked_in_status_list) && is_array($checked_in_status_list)) {
@@ -135,10 +136,10 @@ class CRM_Eventcheckin_CheckinFields {
   /**
    * List of field_id => field_label if all eligible fields
    *
-   * @return array
+   * @return array<string, string>
    *   field list
    */
-  public static function getFieldList() {
+  public static function getFieldList(): array {
     $field_list = [];
     $all_fields = self::allFields();
     foreach ($all_fields as $field_spec) {
@@ -149,14 +150,12 @@ class CRM_Eventcheckin_CheckinFields {
   }
 
   /**
-   * Get the participant object
-   *
-   * @param integer $participant_id
-   *   the participant id
+   * @return list<array<string, mixed>>
    */
-  public static function getParticipantFields($participant_id) {
+  public static function getParticipantFields(int $participantId): array {
     $result = [];
     $all_fields = self::allFields();
+    /** @var list<string> $fields_enabled */
     $fields_enabled = Civi::settings()->get('event_verification_fields');
     if (!empty($fields_enabled)) {
       foreach ($fields_enabled as $field_name) {
@@ -165,7 +164,7 @@ class CRM_Eventcheckin_CheckinFields {
           continue;
         }
         $field_spec = $all_fields[$field_name];
-        $field_spec['value'] = self::getFieldValue($field_spec, $participant_id);
+        $field_spec['value'] = self::getFieldValue($field_spec, $participantId);
         $result[] = $field_spec;
       }
     }
@@ -175,28 +174,25 @@ class CRM_Eventcheckin_CheckinFields {
   /**
    * Extract the field value for the given field spec
    *
-   * @param array $field_spec
+   * @param array<string, string> $fieldSpec
    *   see self::allFields
    *
-   * @param integer $particpant_id
-   *   participant id
-   *
-   * @return mixed value
+   * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
    */
-  public static function getFieldValue($field_spec, $particpant_id) {
+  public static function getFieldValue(array $fieldSpec, int $participantId): mixed {
     // get entity
-    list($entity, $field_name) = explode('.', $field_spec['path'], 2);
+    [$entity, $field_name] = explode('.', $fieldSpec['path'], 2);
     switch (strtolower($entity)) {
       case 'participant':
-        $entity_data = self::getParticipant($particpant_id);
+        $entity_data = self::getParticipant($participantId);
         break;
 
       case 'event':
-        $entity_data = self::getEventForParticipant($particpant_id);
+        $entity_data = self::getEventForParticipant($participantId);
         break;
 
       case 'contact':
-        $entity_data = self::getContactForParticipant($particpant_id);
+        $entity_data = self::getContactForParticipant($participantId);
         break;
 
       default:
@@ -204,7 +200,7 @@ class CRM_Eventcheckin_CheckinFields {
     }
 
     // get field value
-    switch (strtolower($field_spec['name'])) {
+    switch (strtolower($fieldSpec['name'])) {
       case 'display_name_link':
         return E::ts('<a href="%1" target="_blank">%2 [%3]</a>', [
           1 => CRM_Utils_System::url('civicrm/contact/view', "reset=1&cid={$entity_data['id']}", TRUE),
@@ -225,50 +221,44 @@ class CRM_Eventcheckin_CheckinFields {
 
       case 'preferred_language':
         $languages = CRM_Core_I18n::languages(FALSE);
-        $language = CRM_Utils_Array::value($entity_data['preferred_language'], $languages, E::ts('unknown'));
+        $language = $languages[$entity_data['preferred_language']] ?? E::ts('unknown');
         return ts($language);
 
       default:
         // get the raw value
-        $value = CRM_Utils_Array::value($field_name, $entity_data);
+        $value = $entity_data[$field_name] ?? NULL;
         // resolve option values, if necessary
         return self::resolveOptionValues($field_name, $value);
     }
   }
 
   /**
-   * Get the participant object
+   * Get the participant
    *
-   * @param integer $participant_id
-   *   the participant id
-   *
-   * @return array participant data
+   * @return array<string, mixed> participant data
    */
-  public static function getParticipant($participant_id) {
+  public static function getParticipant(int $participantId): array {
     static $participant = [];
-    if (!isset($participant[$participant_id])) {
-      $participant[$participant_id] = civicrm_api3(
+    if (!isset($participant[$participantId])) {
+      $participant[$participantId] = civicrm_api3(
         'Participant',
         'getsingle',
         [
-          'id' => $participant_id,
+          'id' => $participantId,
           'return' => self::PARTICIPANT_FIELDS . self::getCustomFieldKeysFor('participant'),
         ]
       );
     }
-    return $participant[$participant_id];
+    return $participant[$participantId];
   }
 
   /**
-   * Get the contact object for the participant
+   * Get the contact for the participant
    *
-   * @param integer $participant_id
-   *   the participant id
-   *
-   * @return array contact data
+   * @return array<string, mixed> contact data
    */
-  public static function getContactForParticipant($participant_id) {
-    $participant = self::getParticipant($participant_id);
+  public static function getContactForParticipant(int $participantId): array {
+    $participant = self::getParticipant($participantId);
     if (empty($participant['contact_id'])) {
       return [];
     }
@@ -289,15 +279,12 @@ class CRM_Eventcheckin_CheckinFields {
   }
 
   /**
-   * Get the event object for the participant
+   * Get the event for the participant
    *
-   * @param integer $participant_id
-   *   the participant id
-   *
-   * @return array event data
+   * @return array<string, mixed> event data
    */
-  public static function getEventForParticipant($participant_id) {
-    $participant = self::getParticipant($participant_id);
+  public static function getEventForParticipant(int $participantId): array {
+    $participant = self::getParticipant($participantId);
     if (empty($participant['event_id'])) {
       return [];
     }
@@ -320,10 +307,10 @@ class CRM_Eventcheckin_CheckinFields {
   /**
    * Get a list of custom fields for the 'Contact', 'Participant' and 'Event' entities
    */
-  protected static function getCustomFieldKeysFor($entity) {
+  protected static function getCustomFieldKeysFor(string $entity): string {
     $custom_field_keys = [];
     $all_eligible_custom_fields = self::getEligibleCustomFields();
-    $entity_custom_fields = CRM_Utils_Array::value(strtolower($entity), $all_eligible_custom_fields, []);
+    $entity_custom_fields = $all_eligible_custom_fields[strtolower($entity)] ?? [];
     foreach ($entity_custom_fields as $custom_field) {
       $custom_field_keys[] = 'custom_' . $custom_field['id'];
     }
@@ -335,16 +322,11 @@ class CRM_Eventcheckin_CheckinFields {
     }
   }
 
-  /**
-   * Resolve a
-   * @param $field_name
-   * @param $value
-   */
-  protected static function resolveOptionValues($field_name, $value) {
+  protected static function resolveOptionValues(string $fieldName, mixed $value): mixed {
     // resolve custom field option values
-    if (substr($field_name, 0, 7) == 'custom_') {
+    if (substr($fieldName, 0, 7) == 'custom_') {
       // this is a custom field, check if we have to resolve any option group
-      $custom_field_id = substr($field_name, 7);
+      $custom_field_id = substr($fieldName, 7);
       $custom_fields = self::getEligibleCustomFields();
       foreach ($custom_fields as $entity => $entity_fields) {
         if (isset($entity_fields[$custom_field_id])) {
@@ -372,8 +354,10 @@ class CRM_Eventcheckin_CheckinFields {
 
   /**
    * Get a list of custom fields for the 'Contact', 'Participant' and 'Event' entities
+   *
+   * @return array<string, array<int, array<string, mixed>>>
    */
-  protected static function getEligibleCustomFields() {
+  protected static function getEligibleCustomFields(): array {
     static $custom_fields = NULL;
     if ($custom_fields === NULL) {
       // initialise result
@@ -432,8 +416,11 @@ class CRM_Eventcheckin_CheckinFields {
 
   /**
    * Add all available custom fields for the 'Contact', 'Participant' and 'Event' fields
+   *
+   * @param array<string, array<string, string>> $fields
+   * @param-out array<string, array<string, string>> $fields
    */
-  protected static function addCustomFields(&$fields) {
+  protected static function addCustomFields(array &$fields): void {
     $all_custom_fields = self::getEligibleCustomFields();
     foreach ($all_custom_fields as $entity => $custom_fields) {
       foreach ($custom_fields as $custom_field) {
@@ -444,7 +431,7 @@ class CRM_Eventcheckin_CheckinFields {
           'path' => "{$entity}.{$key}",
           'label' => E::ts('%1 (%2)', [
             1 => $custom_field['label'],
-            2 => E::ts($custom_field['extends']),
+            2 => $custom_field['extends'],
           ]),
         ];
       }

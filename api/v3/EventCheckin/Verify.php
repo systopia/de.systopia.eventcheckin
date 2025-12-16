@@ -27,7 +27,7 @@ use CRM_Eventcheckin_ExtensionUtil as E;
  * @param array $spec
  *   API specification blob
  */
-function _civicrm_api3_event_checkin_verify_spec(&$spec) {
+function _civicrm_api3_event_checkin_verify_spec(array &$spec): void {
   $spec['remote_contact_id'] = [
     'name'         => 'remote_contact_id',
     'api.required' => 0,
@@ -53,7 +53,7 @@ function _civicrm_api3_event_checkin_verify_spec(&$spec) {
  *
  * phpcs:disable Generic.Metrics.CyclomaticComplexity.TooHigh
  */
-function civicrm_api3_event_checkin_verify($params) {
+function civicrm_api3_event_checkin_verify(array $params): array {
 // phpcs:enable
   // 1) VERIFY PERMISSION
   if (!CRM_Core_Permission::check('event checkin')) {
@@ -101,6 +101,7 @@ function civicrm_api3_event_checkin_verify($params) {
   if (empty($valid_status_list)) {
     throw new CRM_Core_Exception(E::ts('No eligible statuses for checkin configured.'));
   }
+  /** @var list<int|string> $valid_status_list */
 
   // get the possible future status list
   $checked_in_status_list = CRM_Eventcheckin_CheckinFields::getCheckedInStatusList();

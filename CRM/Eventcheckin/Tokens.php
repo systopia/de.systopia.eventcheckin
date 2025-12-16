@@ -15,11 +15,13 @@
 
 declare(strict_types = 1);
 
+use Civi\EventMessages\MessageTokenList;
 use CRM_Eventcheckin_ExtensionUtil as E;
 use Civi\EventMessages\MessageTokens as MessageTokens;
 use chillerlan\QRCode\QRCode;
 
 class CRM_Eventcheckin_Tokens {
+
   public const TEMPLATE_CODE_LINK          = 'event_checkin_link';
   public const TEMPLATE_CODE_TOKEN         = 'event_checkin_code';
   public const TEMPLATE_CODE_TOKEN_QR_DATA = 'event_checkin_code_data';
@@ -31,7 +33,7 @@ class CRM_Eventcheckin_Tokens {
    * @param \Civi\EventMessages\MessageTokenList $tokenList
    *   token list event
    */
-  public static function listTokens($tokenList) {
+  public static function listTokens(MessageTokenList $tokenList): void {
     $tokenList->addToken(
         '$' . self::TEMPLATE_CODE_TOKEN,
         E::ts('Check-In Token')
@@ -57,7 +59,7 @@ class CRM_Eventcheckin_Tokens {
    * @param \Civi\EventMessages\MessageTokens $messageTokens
    *   the token list
    */
-  public static function addTokens(MessageTokens $messageTokens) {
+  public static function addTokens(MessageTokens $messageTokens): void {
     $tokens = $messageTokens->getTokens();
     if (empty($tokens['participant']['id'])) {
       // no participant, no check-in tokens
@@ -66,15 +68,12 @@ class CRM_Eventcheckin_Tokens {
 
     // check which tokens we want
     $add_token_and_link = TRUE;
-    $render_qr_code     = TRUE;
-    if (method_exists($messageTokens, 'requiresToken')) {
-      // if the requiresToken function exists, we can check if we actually need to do anything
-      $render_qr_code = $messageTokens->requiresToken(self::TEMPLATE_CODE_TOKEN_QR_IMG)
-                || $messageTokens->requiresToken(self::TEMPLATE_CODE_TOKEN_QR_DATA);
-      if (!$render_qr_code) {
-        $add_token_and_link = $messageTokens->requiresToken(self::TEMPLATE_CODE_LINK)
-                    || $messageTokens->requiresToken(self::TEMPLATE_CODE_TOKEN);
-      }
+    // if the requiresToken function exists, we can check if we actually need to do anything
+    $render_qr_code = $messageTokens->requiresToken(self::TEMPLATE_CODE_TOKEN_QR_IMG)
+              || $messageTokens->requiresToken(self::TEMPLATE_CODE_TOKEN_QR_DATA);
+    if (!$render_qr_code) {
+      $add_token_and_link = $messageTokens->requiresToken(self::TEMPLATE_CODE_LINK)
+                  || $messageTokens->requiresToken(self::TEMPLATE_CODE_TOKEN);
     }
 
     // now: let's go
@@ -94,6 +93,7 @@ class CRM_Eventcheckin_Tokens {
       // generate the data
       $qr_code = new QRCode();
       $qr_code_data = $qr_code->render($link);
+      assert(is_string($qr_code_data));
       $messageTokens->setToken(self::TEMPLATE_CODE_TOKEN_QR_DATA, $qr_code_data, FALSE);
 
       // compile an img tag for convenience

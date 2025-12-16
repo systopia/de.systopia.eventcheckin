@@ -1,3 +1,6 @@
+includes:
+	- phpstan-baseline.neon
+
 parameters:
 	paths:
 		- api
@@ -12,6 +15,9 @@ parameters:
 		- eventcheckin.civix.php
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework/TestCase.php
 	scanDirectories:
+		- ../de.systopia.eventmessages/Civi
+		- ../de.systopia.remotetools/Civi
+		- ../de.systopia.remotetools/CRM
 		- tools/phpunit/vendor/bin/.phpunit/phpunit/src/Framework
 		- mixin
 	bootstrapFiles:
@@ -23,8 +29,10 @@ parameters:
 		- CRM_Core_Config
 		- CRM_Core_DAO
 	earlyTerminatingMethodCalls:
+		CRM_Utils_System:
+			- civiExit
 		CRM_Queue_Runner:
-		  - runAllViaWeb
+			- runAllViaWeb
 	checkTooWideReturnTypesInProtectedAndPublicMethods: true
 	checkUninitializedProperties: true
 	checkMissingCallableSignature: true
