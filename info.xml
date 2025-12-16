@@ -5,8 +5,8 @@
   <description>Provides convenient check-in functions like QR codes</description>
   <license>AGPL-3.0</license>
   <maintainer>
-    <author>SYSTOPIA</author>
-    <email>endres@systopia.de</email>
+    <author>SYSTOPIA GmbH</author>
+    <email>info@systopia.de</email>
   </maintainer>
   <urls>
     <url desc="Main Extension Page">https://github.com/systopia/de.systopia.eventcheckin</url>
