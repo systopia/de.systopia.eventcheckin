@@ -96,6 +96,11 @@ jobs:
             "civicrm/civicrm-packages:${{ inputs.civicrm-version }}"
         fi
 
+        # Until systopia/de.systopia.remotetools is officially released as composer package.
+        git clone --depth=1 https://github.com/systopia/de.systopia.remotetools.git ../de.systopia.remotetools
+        composer config repositories.remotetools path $(dirname $PWD)/de.systopia.remotetools
+        composer require --no-update systopia/de.systopia.remotetools
+
         # --with-all-dependencies is required because downgrades from packages
         # installed before might be necessary.
         # \PEAR_ErrorStack::singleton() is static since pear/pear-core v1.10.16
@@ -104,8 +109,6 @@ jobs:
         composer require --with-all-dependencies --no-progress --prefer-dist --${{ matrix.prefer }} \
           --optimize-autoloader $EXT_COMPOSER_NAME 'pear/pear-core-minimal:>=1.10.16' \
           'civicrm/composer-compile-plugin:>=0.22'
-
-        git clone --depth=1 https://github.com/systopia/de.systopia.remotetools.git ext/de.systopia.remotetools
 
     - name: Set up CiviCRM
       env:
