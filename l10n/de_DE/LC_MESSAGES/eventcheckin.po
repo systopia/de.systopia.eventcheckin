@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: de.systopia.eventcheckin\n"
-"POT-Creation-Date: 2021-07-07 18:33+0200\n"
+"POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: CiviCRM Translators <civicrm-translators@lists.civicrm.org>\n"
@@ -13,8 +13,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: CRM/Eventcheckin/CheckinCode.php api/v3/EventCheckin/Confirm.php
 #: api/v3/EventCheckin/Verify.php
@@ -174,10 +174,6 @@ msgstr "Check-In QR-Code (Daten)"
 msgid "Checkin QR Code"
 msgstr "Check-In QR Code"
 
-#: CRM/Eventcheckin/Upgrader/Base.php
-msgid "Upgrade %1 to revision %2"
-msgstr ""
-
 #: api/v3/EventCheckin/Confirm.php api/v3/EventCheckin/Verify.php
 msgid "Remote Contact ID"
 msgstr ""
@@ -253,8 +249,16 @@ msgid "Check-In Event Participants"
 msgstr "Teilnehmer Einchecken"
 
 #: eventcheckin.php
+msgid "Allows checking-in event participants."
+msgstr "Erlaubt Check-In von Veranstaltungsteilnehmern."
+
+#: eventcheckin.php
 msgid "RemoteContacts: Check-In Event Participants"
-msgstr ""
+msgstr "RemoteContacts: Veranstaltungsteilnehmer einchecken"
+
+#: eventcheckin.php
+msgid "Allows checking-in event participants vie the CiviRemote API."
+msgstr "Erlaubt Check-In von Veranstaltungsteilnehmern via CiviRemote API."
 
 #: templates/CRM/Eventcheckin/Form/CheckIn.tpl
 msgid "Participant information"
