@@ -115,12 +115,6 @@ parameters:
 			path: CRM/Eventcheckin/Tokens.php
 
 		-
-			message: '#^Variable \$link might not be defined\.$#'
-			identifier: variable.undefined
-			count: 1
-			path: CRM/Eventcheckin/Tokens.php
-
-		-
 			message: '#^Cannot access offset ''checkin_options'' on array\|int\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
